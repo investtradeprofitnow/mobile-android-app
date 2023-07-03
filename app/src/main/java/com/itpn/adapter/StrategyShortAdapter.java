@@ -1,6 +1,7 @@
 package com.itpn.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -48,10 +50,21 @@ public class StrategyShortAdapter extends RecyclerView.Adapter<StrategyShortAdap
 		holder.buyNowLink.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String url = strategy.getLink();
-				Intent intent = new Intent(Intent.ACTION_VIEW);
-				intent.setData(Uri.parse(url));
-				context.startActivity(intent);
+				AlertDialog.Builder builder = new AlertDialog.Builder(context);
+				builder.setMessage("This will take you to a third-party site to view the content. Do you wish to continue?");
+				builder.setCancelable(false);
+				builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
+					String url = strategy.getLink();
+					Intent intent = new Intent(Intent.ACTION_VIEW);
+					intent.setData(Uri.parse(url));
+					context.startActivity(intent);
+				});
+
+				builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
+					dialog.cancel();
+				});
+				AlertDialog dialog = builder.create();
+				dialog.show();
 			}
 		});
 	}

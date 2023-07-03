@@ -1,5 +1,6 @@
 package com.itpn.activity;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +32,7 @@ public class FeedbackActivity extends MenuForActivity implements AppConfig {
 	TextView characterLength;
 	Button saveFeedback;
 	CheckBox anonymousCheck;
-	ProgressBar spinner;
+	ProgressDialog progressDialog;
 	JSONParser jsonParser;
 
 	@Override
@@ -44,8 +44,9 @@ public class FeedbackActivity extends MenuForActivity implements AppConfig {
 		saveFeedback = findViewById(R.id.btn_save_feedback);
 		anonymousCheck = findViewById(R.id.cb_anonymous);
 		characterLength = findViewById(R.id.tv_character);
-		spinner = findViewById(R.id.pb_loading);
-		spinner.setVisibility(View.GONE);
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setTitle("Saving Feedback");
+		progressDialog.setMessage("Please wait while we save your feedback...");
 		jsonParser = new JSONParser();
 
 		feedback.addTextChangedListener(new TextWatcher() {
@@ -88,7 +89,7 @@ public class FeedbackActivity extends MenuForActivity implements AppConfig {
 					Gson g = new Gson();
 					Customer customer = g.fromJson(customerJson,Customer.class);
 					int customerId = customer.getCustomerId();
-					spinner.setVisibility(View.VISIBLE);
+					progressDialog.show();
 					saveFeedback.setClickable(false);
 					SaveFeedback saveFeedback1 = new SaveFeedback();
 					saveFeedback1.execute(customerId+"", rating, feedbackVal,anonymous);
@@ -119,7 +120,7 @@ public class FeedbackActivity extends MenuForActivity implements AppConfig {
 			try {
 				String message = jsonObject.getString("message");
 				Toast.makeText(FeedbackActivity.this, message, Toast.LENGTH_LONG).show();
-				spinner.setVisibility(View.GONE);
+				progressDialog.dismiss();
 				saveFeedback.setClickable(true);
 			}
 			catch (JSONException e) {

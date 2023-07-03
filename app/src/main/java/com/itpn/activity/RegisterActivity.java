@@ -1,12 +1,12 @@
 package com.itpn.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +25,7 @@ public class RegisterActivity extends MenuForActivity implements AppConfig {
 	EditText name=null, email=null, password=null;
 	Button sendOtp=null;
 	TextView login=null;
-	ProgressBar spinner;
+	ProgressDialog progressDialog;
 	JSONParser jsonParser;
 	Intent intent;
 
@@ -38,9 +38,10 @@ public class RegisterActivity extends MenuForActivity implements AppConfig {
 		password = findViewById(R.id.et_password);
 		sendOtp = findViewById(R.id.btn_send_otp);
 		login = findViewById(R.id.btn_login);
-		spinner = findViewById(R.id.pb_loading);
 		jsonParser = new JSONParser();
-		spinner.setVisibility(View.GONE);
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setTitle("Email Verification");
+		progressDialog.setMessage("Please wait while we send OTP on your email...");
 		sendOtp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -75,7 +76,7 @@ public class RegisterActivity extends MenuForActivity implements AppConfig {
 					intent.putExtra("email",emailVal);
 					intent.putExtra("password",passwordVal);
 					intent.putExtra("Page","Register");
-					spinner.setVisibility(View.VISIBLE);
+					progressDialog.show();
 					sendOtp.setClickable(false);
 					CheckCustomer checkCustomer = new CheckCustomer();
 					checkCustomer.execute(emailVal);
@@ -113,7 +114,7 @@ public class RegisterActivity extends MenuForActivity implements AppConfig {
 					sendOtpToUser.execute(emailVal,nameVal);
 				}
 				else{
-					spinner.setVisibility(View.GONE);
+					progressDialog.dismiss();
 					sendOtp.setClickable(true);
 					String message = jsonObject.getString("message");
 					Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
@@ -145,7 +146,7 @@ public class RegisterActivity extends MenuForActivity implements AppConfig {
 		protected void onPostExecute(JSONObject jsonObject) {
 			try {
 				String status = jsonObject.getString("status");
-				spinner.setVisibility(View.GONE);
+				progressDialog.dismiss();
 				sendOtp.setClickable(true);
 				if(status.equals("success")){
 					startActivity(intent);

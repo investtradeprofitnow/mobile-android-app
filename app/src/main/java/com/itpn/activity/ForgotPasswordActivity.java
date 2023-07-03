@@ -1,12 +1,12 @@
 package com.itpn.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +24,7 @@ public class ForgotPasswordActivity extends MenuForActivity implements AppConfig
 	TextView btnBack;
 	EditText email;
 	Button sendOtp;
-	ProgressBar spinner;
+	ProgressDialog progressDialog;
 	JSONParser jsonParser = null;
 	Intent intent;
 
@@ -34,14 +34,15 @@ public class ForgotPasswordActivity extends MenuForActivity implements AppConfig
 		setContentView(R.layout.activity_forgot_password);
 		email = findViewById(R.id.et_forgot_email);
 		sendOtp = findViewById(R.id.btn_send_otp_forgot);
-		spinner = findViewById(R.id.pb_loading);
-		spinner.setVisibility(View.GONE);
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setTitle("Email Verification");
+		progressDialog.setMessage("Please wait while we send OTP on your email...");
 		btnBack = findViewById(R.id.btn_back);
 		jsonParser = new JSONParser();
 		sendOtp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				spinner.setVisibility(View.VISIBLE);
+				progressDialog.show();
 				sendOtp.setClickable(false);
 				CheckCustomer checkCustomer = new CheckCustomer();
 				checkCustomer.execute(email.getText().toString());
@@ -77,7 +78,7 @@ public class ForgotPasswordActivity extends MenuForActivity implements AppConfig
 					sendOtp.execute(emailVal);
 				}
 				else{
-					spinner.setVisibility(View.GONE);
+					progressDialog.dismiss();
 					sendOtp.setClickable(true);
 					String message = jsonObject.getString("message");
 					Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
@@ -103,7 +104,7 @@ public class ForgotPasswordActivity extends MenuForActivity implements AppConfig
 		protected void onPostExecute(JSONObject jsonObject) {
 			try {
 				String status = jsonObject.getString("status");
-				spinner.setVisibility(View.GONE);
+				progressDialog.dismiss();
 				sendOtp.setClickable(true);
 				if(status.equals("success")){
 					String emailVal = email.getText().toString();

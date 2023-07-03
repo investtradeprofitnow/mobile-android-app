@@ -8,6 +8,7 @@ public interface AppConfig {
 	String REGISTER_API = "register-api.php";
 	String LOGIN_API = "login-api.php";
 	String CHECK_CUSTOMER = "check-customer.php";
+	String GET_CUSTOMER_DETAILS="get-customer-details.php";
 	String SEND_OTP_API = "send-otp-api.php";
 	String SEND_OTP_FORGOT_API = "send-otp-forgot-api.php";
 	String STRATEGY_LIST_API = "strategy-list-api.php";

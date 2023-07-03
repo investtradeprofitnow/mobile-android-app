@@ -1,5 +1,6 @@
 package com.itpn.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -7,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class ChangePasswordActivity extends MenuForActivity implements AppConfig {
 	EditText password, confirmPassword;
 	Button btnUpdatePassword;
-	ProgressBar spinner;
+	ProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +34,9 @@ public class ChangePasswordActivity extends MenuForActivity implements AppConfig
 		password = findViewById(R.id.et_change_pwd);
 		confirmPassword = findViewById(R.id.et_confirm_pwd);
 		btnUpdatePassword = findViewById(R.id.btn_update_password);
-		spinner = findViewById(R.id.pb_loading);
-		spinner.setVisibility(View.GONE);
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setTitle("Updating Password");
+		progressDialog.setMessage("Please wait while we update your password");
 		btnUpdatePassword.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -72,7 +73,7 @@ public class ChangePasswordActivity extends MenuForActivity implements AppConfig
 						Customer customer = g.fromJson(customerJson,Customer.class);
 						email = customer.getEmail();
 					}
-					spinner.setVisibility(View.VISIBLE);
+					progressDialog.show();
 					btnUpdatePassword.setClickable(false);
 					UpdatePassword updatePassword = new UpdatePassword();
 					updatePassword.execute(email,passwordVal);
@@ -98,7 +99,7 @@ public class ChangePasswordActivity extends MenuForActivity implements AppConfig
 		protected void onPostExecute(JSONObject jsonObject) {
 			try {
 				String status = jsonObject.getString("status");
-				spinner.setVisibility(View.GONE);
+				progressDialog.dismiss();
 				btnUpdatePassword.setClickable(true);
 				if(status.equals("success")){
 					SharedPreferences sharedPreferences = getSharedPreferences("ITPN",MODE_PRIVATE);

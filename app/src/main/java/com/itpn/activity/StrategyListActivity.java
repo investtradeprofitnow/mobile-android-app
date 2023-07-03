@@ -1,8 +1,10 @@
 package com.itpn.activity;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -53,6 +55,23 @@ public class StrategyListActivity extends MenuForActivity implements AppConfig {
 			GetStrategyList getStrategyList = new GetStrategyList();
 			getStrategyList.execute();
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(StrategyListActivity.this);
+		builder.setMessage("Do you wish to exit the application?");
+		builder.setCancelable(false);
+		builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
+			StrategyListActivity.this.finishAffinity();
+			System.exit(0);
+		});
+
+		builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
+			dialog.cancel();
+		});
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
 
 	private  class GetStrategyList extends AsyncTask<Void,Void, JSONArray> {

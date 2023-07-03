@@ -1,5 +1,7 @@
 package com.itpn.activity;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -7,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -27,7 +28,7 @@ public class ProfileActivity extends MenuForActivity implements AppConfig {
 	ImageView profileImg;
 	EditText name, email;
 	Button btnUpdate;
-	ProgressBar spinner;
+	ProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +38,10 @@ public class ProfileActivity extends MenuForActivity implements AppConfig {
 		name = findViewById(R.id.et_name);
 		email = findViewById(R.id.et_email);
 		btnUpdate = findViewById(R.id.btn_update_profile);
-		spinner = findViewById(R.id.pb_loading);
-		spinner.setVisibility(View.GONE);
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setTitle("Updating Profile");
+		progressDialog.setMessage("Please wait while we save your profile details");
+		profileImg.setClickable(true);
 		SharedPreferences sharedPreferences = getSharedPreferences("ITPN",MODE_PRIVATE);
 		String customerJson = sharedPreferences.getString("Customer","");
 		Gson g = new Gson();
@@ -51,6 +54,7 @@ public class ProfileActivity extends MenuForActivity implements AppConfig {
 			photo = nameVal.toUpperCase().charAt(0)+".png";
 		}
 		Glide.with(this).load(PROFILE_IMAGE_URL+photo).into(profileImg);
+
 		btnUpdate.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -72,7 +76,7 @@ public class ProfileActivity extends MenuForActivity implements AppConfig {
 				if(!error){
 					int customerId = customer.getCustomerId();
 					String currentEmail = customer.getEmail();
-					spinner.setVisibility(View.VISIBLE);
+					progressDialog.show();
 					btnUpdate.setClickable(false);
 					UpdateProfile updateProfile = new UpdateProfile();
 					updateProfile.execute(updateName, updateEmail, currentEmail, customerId+"");
@@ -103,8 +107,7 @@ public class ProfileActivity extends MenuForActivity implements AppConfig {
 			try {
 				String status = jsonObject.getString("status");
 				String message = jsonObject.getString("message");
-				spinner.setVisibility(View.GONE);
-				btnUpdate.setClickable(true);
+				progressDialog.dismiss();
 				if(status.equals("success")){
 					String nameVal = jsonObject.getString("name");
 					String emailVal = jsonObject.getString("email");
@@ -120,6 +123,7 @@ public class ProfileActivity extends MenuForActivity implements AppConfig {
 					editor.commit();
 					name.setText(nameVal);
 					email.setText(emailVal);
+					startActivity(new Intent(ProfileActivity.this, ProfileActivity.class));
 				}
 				Toast.makeText(ProfileActivity.this, message, Toast.LENGTH_LONG).show();
 			}

@@ -1,5 +1,6 @@
 package com.itpn.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -7,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +27,7 @@ public class LoginActivity extends MenuForActivity implements AppConfig {
 	EditText email, password;
 	Button login;
 	TextView register, forgotPassword;
-	ProgressBar spinner;
+	ProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +40,9 @@ public class LoginActivity extends MenuForActivity implements AppConfig {
 			login = findViewById(R.id.btn_login);
 			register = findViewById(R.id.btn_register);
 			forgotPassword = findViewById(R.id.btn_forgot_pwd);
-			spinner = findViewById(R.id.pb_loading);
-			spinner.setVisibility(View.GONE);
+			progressDialog = new ProgressDialog(this);
+			progressDialog.setTitle("Login in Progress");
+			progressDialog.setMessage("Please wait while we check the credentials...");
 			login.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -66,7 +67,7 @@ public class LoginActivity extends MenuForActivity implements AppConfig {
 						error = true;
 					}
 					if(!error){
-						spinner.setVisibility(View.VISIBLE);
+						progressDialog.show();
 						login.setClickable(false);
 						AttemptLogin attemptLogin = new AttemptLogin();
 						attemptLogin.execute(emailVal,passwordVal);
@@ -91,10 +92,12 @@ public class LoginActivity extends MenuForActivity implements AppConfig {
 			});
 		}
 		else{
-			saveLoginStatus(true);
-			Intent intent = new Intent(this,StrategyListActivity.class);
-			intent.putExtra("Page","Login");
-			startActivity(intent);
+			SharedPreferences sharedPreferences = getSharedPreferences("ITPN",MODE_PRIVATE);
+			String customerJson = sharedPreferences.getString("Customer","");
+			Gson g = new Gson();
+			Customer customer = g.fromJson(customerJson,Customer.class);
+			GetCustomerDetails getCustomerDetails = new GetCustomerDetails();
+			getCustomerDetails.execute(customer.getCustomerId()+"");
 		}
 	}
 
@@ -115,7 +118,7 @@ public class LoginActivity extends MenuForActivity implements AppConfig {
 		protected void onPostExecute(JSONObject jsonObject) {
 			try{
 				String status = jsonObject.getString("status");
-				spinner.setVisibility(View.GONE);
+				progressDialog.dismiss();
 				login.setClickable(true);
 				if(status.equals("success")){
 					JSONObject customerJson = jsonObject.getJSONObject("customer");
@@ -138,6 +141,40 @@ public class LoginActivity extends MenuForActivity implements AppConfig {
 			}
 			catch (JSONException e) {
 				e.printStackTrace();
+			}
+		}
+	}
+
+	private class GetCustomerDetails extends AsyncTask<String,String,JSONObject>{
+
+		@Override
+		protected JSONObject doInBackground(String... strings) {
+			JSONParser jsonParser = new JSONParser();
+			String customerId = strings[0];
+			ArrayList<BasicNameValuePair> params  = new ArrayList<>();
+			params.add(new BasicNameValuePair("customerId",customerId));
+			JSONObject json = jsonParser.makeHttpRequest(APP_API_URL+GET_CUSTOMER_DETAILS, params);
+			return json;
+		}
+
+		@Override
+		protected void onPostExecute(JSONObject jsonObject) {
+			try {
+				saveLoginStatus(true);
+				JSONObject customerJson = jsonObject.getJSONObject("customer");
+				Customer customer = new Customer(customerJson);
+				SharedPreferences sharedPreferences = getSharedPreferences("ITPN",MODE_PRIVATE);
+				SharedPreferences.Editor editor = sharedPreferences.edit();
+				Gson gson = new Gson();
+				String jsonCustomer = gson.toJson(customer);
+				editor.putString("Customer", jsonCustomer);
+				editor.commit();
+				Intent intent = new Intent(LoginActivity.this,StrategyListActivity.class);
+				intent.putExtra("Page","Login");
+				startActivity(intent);
+			}
+			catch (JSONException e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}

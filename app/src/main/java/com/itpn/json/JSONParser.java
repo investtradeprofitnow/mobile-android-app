@@ -102,7 +102,6 @@ public class JSONParser {
 			result.append("=");
 			result.append(URLEncoder.encode(param.getValue(), "UTF-8"));
 		}
-		System.out.println(result.toString());
 		return result.toString();
 	}
 

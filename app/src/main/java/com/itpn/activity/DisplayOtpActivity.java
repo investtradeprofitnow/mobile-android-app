@@ -1,5 +1,6 @@
 package com.itpn.activity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +12,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +35,7 @@ public class DisplayOtpActivity extends MenuForActivity implements AppConfig {
 	private final int resendTime = 80;
 	private String name, email,password;
 	JSONParser jsonParser;
-	ProgressBar spinner;
+	ProgressDialog progressDialog;
 	String pageName;
 
 	@Override
@@ -44,7 +44,9 @@ public class DisplayOtpActivity extends MenuForActivity implements AppConfig {
 		setContentView(R.layout.activity_display_otp);
 		pinview = findViewById(R.id.pv_otp);
 		resendOtp = findViewById(R.id.btn_resend_otp);
-		spinner = findViewById(R.id.pb_loading);
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setTitle("Verify OTP");
+		progressDialog.setMessage("Please wait while we verify your OTP...");
 		btnBack = findViewById(R.id.btn_back);
 		jsonParser = new JSONParser();
 		pinview.requestFocus();
@@ -79,7 +81,7 @@ public class DisplayOtpActivity extends MenuForActivity implements AppConfig {
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				if(s.toString().length()==6){
 					String otp = s.toString();
-					spinner.setVisibility(View.VISIBLE);
+					progressDialog.show();
 					VerifyOtp verifyOtp = new VerifyOtp();
 					verifyOtp.execute(email,otp);
 				}
@@ -96,7 +98,7 @@ public class DisplayOtpActivity extends MenuForActivity implements AppConfig {
 		resendOtp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				spinner.setVisibility(View.VISIBLE);
+				progressDialog.show();
 				ResendOtp resend = new ResendOtp();
 				resend.execute(email);
 			}
@@ -137,10 +139,10 @@ public class DisplayOtpActivity extends MenuForActivity implements AppConfig {
 		protected void onPostExecute(JSONObject jsonObject) {
 			try {
 				String status = jsonObject.getString("status");
-				spinner.setVisibility(View.GONE);
+				progressDialog.dismiss();
 				if(status.equals("success")){
 					if("Register".equals(pageName)){
-						spinner.setVisibility(View.VISIBLE);
+						progressDialog.show();
 						RegisterUser registerUser = new RegisterUser();
 						registerUser.execute(name,email,password);
 					}
@@ -183,7 +185,7 @@ public class DisplayOtpActivity extends MenuForActivity implements AppConfig {
 			try {
 				if(jsonObject!=null){
 					String status = jsonObject.getString("status");
-					spinner.setVisibility(View.GONE);
+					progressDialog.dismiss();
 					if(status.equals("success")){
 						JSONObject customerJson = jsonObject.getJSONObject("customer");
 						Customer customer = new Customer(customerJson);
@@ -225,7 +227,7 @@ public class DisplayOtpActivity extends MenuForActivity implements AppConfig {
 		protected void onPostExecute(JSONObject jsonObject) {
 			try {
 				String status = jsonObject.getString("status");
-				spinner.setVisibility(View.GONE);
+				progressDialog.dismiss();
 				if(status.equals("success")){
 					resendOtp.setText("OTP has been resent to the email id");
 					resendOtp.setTextSize(15);
