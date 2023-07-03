@@ -74,6 +74,11 @@ public class StrategyShortAdapter extends RecyclerView.Adapter<StrategyShortAdap
 		return strategyList.size();
 	}
 
+	@Override
+	public void onViewAttachedToWindow(@NonNull StrategyViewHolder holder) {
+		view.animate().alpha(1f).setDuration(150);
+	}
+
 	public class StrategyViewHolder extends RecyclerView.ViewHolder{
 		private ImageView image;
 		private TextView name, description, type, buyNowLink;

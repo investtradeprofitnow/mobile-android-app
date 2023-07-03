@@ -2,11 +2,11 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="12dp"
     app:cardCornerRadius="30dp"
-    android:layout_margin="6dp"
+    android:layout_margin="10dp"
     android:paddingTop="15dp">
 
     <RelativeLayout
@@ -18,10 +18,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="15dp"
             android:text="Strategy Name"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="35sp"
+            android:textSize="30sp"
             android:textStyle="bold"/>
 
         <ImageView
@@ -65,16 +66,15 @@
             android:paddingHorizontal="15sp"
             android:text="100% profitable strategy"
             android:textColor="@color/black"
-            android:textSize="20sp"/>
+            android:textSize="18dp"/>
 
         <Button
             android:id="@+id/btn_buy_now"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginVertical="20dp"
             android:layout_centerInParent="true"
             android:text="Buy Now"
-            android:textSize="20dp"
             android:layout_below="@id/tv_strategy_short_desc" />
     </RelativeLayout>
 

@@ -35,7 +35,7 @@ public class StrategyListActivity extends MenuForActivity implements AppConfig {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_strategy_list);
-		recyclerView = findViewById(R.id.rv_strategy_short_list);
+		recyclerView = findViewById(R.id.rv_strategy_list);
 		context = this;
 		strategyList = new ArrayList<>();
 		Intent intent = getIntent();
@@ -97,7 +97,7 @@ public class StrategyListActivity extends MenuForActivity implements AppConfig {
 				editor.putString("strategies", jsonStrategy);
 				editor.commit();
 				adapter = new StrategyShortAdapter(context,strategyList);
-				RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
+				RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
 				recyclerView.setLayoutManager(layoutManager);
 				recyclerView.setAdapter(adapter);
 			}
