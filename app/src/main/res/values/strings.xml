@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">Invest Trade Profit Now</string>
+
+    <!--  Menu -->
+    <string name="home">Home</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="about_us">About Us</string>
+    <string name="my_profile">My Profile</string>
+    <string name="feedback">Feedback</string>
+    <string name="change_password">Change Password</string>
+    <string name="logout">Logout</string>
+    <string name="login">Login</string>
+
+    <!-- Login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="accept_terms_privacy_disclaimer">By Proceeding, I accept the <a href="https://www.investtradeprofitnow.com/terms-and-conditions">Terms and Conditions</a>,<a href="https://www.investtradeprofitnow.com/privacy-policy">Privacy Policy</a> and <a href="https://www.investtradeprofitnow.com/disclaimer">Disclaimer</a></string>
+    <string name="back_login">Back To Login</string>
+
+    <!-- Register -->
+    <string name="prompt_name">Name</string>
+    <string name="register">Register Here</string>
+
+    <!-- Forgot Password -->
+    <string name="forgot_pwd">Forgot Password</string>
+
+    <!-- OTP -->
+    <string name="send_otp">Send OTP</string>
+    <string name="verify_otp_title">Verify OTP</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="spam_folder">If you haven\'t received the OTP in your inbox, please check your spam folder.</string>
+
+    <!-- Change Password -->
+    <string name="confirm_password">Confirm Password</string>
+    <string name="update_password">Update Password</string>
+
+    <!-- About Us -->
+    <string name="action_settings">Settings</string>
+    <string name="who_we_are">Who We Are</string>
+    <string name="who_we_are_text">We started our journey in the market as small time retailers and have gathered enough experience and knowledge to start this wonderful venture with a purpose to help our fellow retailers earn with the strategies bringing consistent profit and help change their attitude towards markets and investments.
+    </string>
+    <string name="what_we_do">What We Do</string>
+    <string name="what_we_do_text">\u2022 We provide strategies to our clients for helping them learn on how to become independent in markets.\n
+\u2022 We provide Intraday as well as positional trading strategies.\n
+\u2022 We provide strategies to identify short term and long term investment opportunities in markets.\n
+\u2022 We provide strategies for buying as well as selling in index as well as stock options.
+    </string>
+
+    <!-- Feedback -->
+    <string name="rating_text">If our strategies have helped you gain profit, please spare some time and provide your valuable feedback</string>
+    <string name="anonymous_text">Check this box if you do not want to disclose your name in the testimonial section.</string>
+    <string name="character_length">0/5000</string>
+    <string name="save_feedback">Save Feedback</string>
+
+    <!-- Profile -->
+    <string name="image_desc">Profile Image</string>
+    <string name="update">Update</string>
+
+    <!-- Testimonial -->
+    <string name="no_testimonial_text">Currently we do not have any testimonials. Please provide your Feedback.</string>
+</resources>
