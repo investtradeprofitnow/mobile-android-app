@@ -47,6 +47,10 @@ public class Customer {
 		return photo;
 	}
 
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}

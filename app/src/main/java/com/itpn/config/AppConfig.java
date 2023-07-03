@@ -13,6 +13,7 @@ public interface AppConfig {
 	String SEND_OTP_FORGOT_API = "send-otp-forgot-api.php";
 	String STRATEGY_LIST_API = "strategy-list-api.php";
 	String UPDATE_PROFILE = "update-profile.php";
+	String DELETE_PHOTO="delete-photo.php";
 	String UPDATE_PASSWORD = "update-password.php";
 	String SAVE_FEEDBACK = "save-feedback.php";
 	String TESTIMONIAL="testimonial.php";
