@@ -19,12 +19,14 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.itpn.R;
 import com.itpn.config.AppConfig;
 import com.itpn.json.JSONParser;
 import com.itpn.model.Customer;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -65,7 +67,10 @@ public class ProfileActivity extends MenuForActivity implements AppConfig {
 		if(photo == null || photo.equals("null")){
 			photo = nameVal.toUpperCase().charAt(0)+".png";
 		}
-		Glide.with(this).load(PROFILE_IMAGE_URL+photo).into(profileImg);
+		photo = photo.replace(" ","%20");
+		Picasso.get().load(PROFILE_IMAGE_URL+photo).memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE).networkPolicy(NetworkPolicy.NO_CACHE,NetworkPolicy.NO_STORE).into(profileImg);
+
+		//Glide.with(this).load(PROFILE_IMAGE_URL+photo).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true). into(profileImg);
 
 		btnUpdate.setOnClickListener(new View.OnClickListener() {
 			@Override
