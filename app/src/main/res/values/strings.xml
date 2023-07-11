@@ -58,4 +58,7 @@
 
     <!-- Testimonial -->
     <string name="no_testimonial_text">Currently we do not have any testimonials. Please provide your Feedback.</string>
+
+    <!-- Strategy List -->
+    <string name="filter_by">Filter By:</string>
 </resources>
