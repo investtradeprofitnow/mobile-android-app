@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,8 +44,10 @@ public class StrategyShortAdapter extends RecyclerView.Adapter<StrategyShortAdap
 		Strategy strategy = strategyList.get(position);
 		holder.name.setText(strategy.getName());
 		holder.description.setText(strategy.getDescription());
+		holder.description.setMovementMethod(new ScrollingMovementMethod());
 		String text = "Type: "+strategy.getType();
 		holder.type.setText(text);
+		holder.buyNowLink.setMovementMethod(new ScrollingMovementMethod());
 		String photoFileName = strategy.getPhoto().replace(" ","%20");
 		Glide.with(view).load(STRATEGY_IMAGE_URL+photoFileName).into(holder.image);
 		holder.buyNowLink.setOnClickListener(new View.OnClickListener() {

@@ -70,8 +70,17 @@ public class StrategyListActivity extends MenuForActivity implements AppConfig {
 			SharedPreferences sharedPreferences = getSharedPreferences("ITPN",MODE_PRIVATE);
 			Gson gson = new Gson();
 			String jsonStrategy = sharedPreferences.getString("strategies",null);
+			String jsonIntradayStrategy =  sharedPreferences.getString("intradayStrategies",null);
+			String jsonBTSTStrategy =  sharedPreferences.getString("btstStrategies",null);
+			String jsonPositionalStrategy =  sharedPreferences.getString("positionalStrategies",null);
+			String jsonInvestmentStrategy =  sharedPreferences.getString("investmentStrategies",null);
 			Type type = new TypeToken<ArrayList<Strategy>>() {}.getType();
 			strategyList = gson.fromJson(jsonStrategy,type);
+			intradayList = gson.fromJson(jsonIntradayStrategy,type);
+			btstList = gson.fromJson(jsonBTSTStrategy,type);
+			positionalList = gson.fromJson(jsonPositionalStrategy,type);
+			investmentList = gson.fromJson(jsonInvestmentStrategy,type);
+
 			adapter = new StrategyShortAdapter(context,strategyList);
 			RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false);
 			recyclerView.setLayoutManager(layoutManager);
@@ -183,7 +192,15 @@ public class StrategyListActivity extends MenuForActivity implements AppConfig {
 				SharedPreferences.Editor editor = sharedPreferences.edit();
 				Gson gson = new Gson();
 				String jsonStrategy = gson.toJson(strategyList);
+				String jsonIntradayStrategy = gson.toJson(intradayList);
+				String jsonBTSTStrategy = gson.toJson(btstList);
+				String jsonPositionalStrategy = gson.toJson(positionalList);
+				String jsonInvestmentStrategy = gson.toJson(investmentList);
 				editor.putString("strategies", jsonStrategy);
+				editor.putString("intradayStrategies", jsonIntradayStrategy);
+				editor.putString("btstStrategies", jsonBTSTStrategy);
+				editor.putString("positionalStrategies", jsonPositionalStrategy);
+				editor.putString("investmentStrategies", jsonInvestmentStrategy);
 				editor.commit();
 				adapter = new StrategyShortAdapter(context,strategyList);
 				RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false);
