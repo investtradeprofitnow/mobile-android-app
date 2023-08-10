@@ -58,6 +58,10 @@ public class MenuForActivity extends AppCompatActivity {
 				intent = new Intent(this,TestimonialActivity.class);
 				startActivity(intent);
 				return true;
+			case R.id.mi_subscriptions:
+				intent = new Intent(this,SubscriptionActivity.class);
+				startActivity(intent);
+				return true;
 			case R.id.mi_login:
 				intent = new Intent(this,LoginActivity.class);
 				startActivity(intent);
