@@ -8,14 +8,18 @@
 
     <item
         android:id="@+id/mi_testimonial"
-        android:title="Testimonials"/>
+        android:title="@string/testimonials"/>
+
+    <item
+        android:id="@+id/mi_subscriptions"
+        android:title="@string/subscriptions"/>
 
     <item
         android:id="@+id/mi_login"
         android:title="@string/login"/>
     <item
         android:id="@+id/mi_strategy_list"
-        android:title="Strategy List"
+        android:title="@string/strategy_list"
         android:visible="false"/>
     <item
         android:id="@+id/mi_logout"
@@ -23,7 +27,7 @@
         android:visible="false"/>
     <item
         android:id="@+id/mi_logged_menu"
-        android:title="Your Details"
+        android:title="@string/your_details"
         android:visible="false">
         <menu>
             <item

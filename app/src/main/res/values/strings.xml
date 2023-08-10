@@ -10,6 +10,10 @@
     <string name="change_password">Change Password</string>
     <string name="logout">Logout</string>
     <string name="login">Login</string>
+    <string name="testimonials">Testimonials</string>
+    <string name="subscriptions">Subscriptions</string>
+    <string name="strategy_list">Strategy List</string>
+    <string name="your_details">Your Details</string>
 
     <!-- Login -->
     <string name="prompt_email">Email</string>
